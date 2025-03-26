@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RoadSpawner : MonoBehaviour
 {
@@ -9,7 +11,7 @@ public class RoadSpawner : MonoBehaviour
     private Vector3 nextSpawnPoint;
 
     public int initialRoadTileCount = 10;
-    public Transform playerTransform;
+    public PlayerController playerTransform;
 
     private void Start()
     {
@@ -18,7 +20,11 @@ public class RoadSpawner : MonoBehaviour
             Debug.LogError("roadTilePrefab is not assigned in the Inspector!");
             return;
         }
+        OnMissionStart();
+    }
 
+    public void OnMissionStart()
+    {
         for (int i = 0; i < initialRoadTileCount; i++)
         {
             SpawnTile(false);
@@ -27,9 +33,10 @@ public class RoadSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (playerTransform != null && playerTransform.position.z < allRoadTiles[0].transform.position.z - 10f)
+        if (playerTransform == null) playerTransform = FindObjectOfType<PlayerController>(); 
+        if (playerTransform != null && playerTransform.gameObject.transform.position.z < allRoadTiles[0].transform.position.z - 10f)
         {
-            ResetRoadTiles();
+            //ResetRoadTiles();
         }
     }
 
@@ -43,7 +50,7 @@ public class RoadSpawner : MonoBehaviour
             return;
         }
 
-        GameObject roadTile = Instantiate(roadTilePrefab, nextSpawnPoint, Quaternion.identity);
+        GameObject roadTile = Instantiate(roadTilePrefab, nextSpawnPoint, Quaternion.identity, transform); //added transform field to spawn as children
         nextSpawnPoint = roadTile.transform.GetChild(1).transform.position;
 
         allRoadTiles.Add(roadTile);

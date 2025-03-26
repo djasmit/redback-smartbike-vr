@@ -12,6 +12,7 @@ public static class MapLoader
         MainMenu,
         MainScene,
         SceneSelect,
+        Mission7Scene,
         CityScene,
         BikeSelectScene,
         SampleScene,

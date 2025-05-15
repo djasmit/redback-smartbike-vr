@@ -119,6 +119,11 @@ public class M7GameManager : MonoBehaviour
         }
     }
 
+    IEnumerator RefreshObjectives()
+    {
+        yield return UIManager.Instance.ClearObjectives();
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -164,7 +169,8 @@ public class M7GameManager : MonoBehaviour
             }
 
             _missionTimer = 0f;
-            UIManager.Instance.RemoveObjective(1);
+            UIManager.Instance.SetObjectiveState(-1, UIManager.ObjectiveState.Complete);
+            StartCoroutine(RefreshObjectives()); // removes current objective to make way for the new one
             UIManager.Instance.AddObjective($"Maintain:\n{_speedGoalActive} for {_switchIntervalActive}s");
         }
 

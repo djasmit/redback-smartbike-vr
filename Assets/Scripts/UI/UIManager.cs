@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     private int _objectiveId;
-    private List<Objective> _objectives;
+    public List<Objective> _objectives;
 
     public Canvas Objectives;
     public Canvas ObjectivesVR;

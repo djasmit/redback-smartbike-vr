@@ -114,6 +114,7 @@ public class PlayerController : MonoBehaviour
         // subscribe to the MQTT topics required
         if (Mqtt.Instance != null)
         {
+            Debug.Log("No MQTT manager!");
             Mqtt.Instance.Subscribe(client_MqttMsgReceived, Mqtt.LeftTurnTopic);
             Mqtt.Instance.Subscribe(client_MqttMsgReceived, Mqtt.RightTurnTopic);
             Mqtt.Instance.Subscribe(client_MqttMsgReceived, Mqtt.SpeedTopic);
@@ -128,6 +129,7 @@ public class PlayerController : MonoBehaviour
 
     void client_MqttMsgReceived(object sender, MqttMsgPublishEventArgs e)
     {
+        Debug.Log($"Received MQTT Message! {e.Topic}, {System.Text.Encoding.UTF8.GetString(e.Message)}");
         if (e.Topic == Mqtt.RightTurnTopic)
         {
             R_Turn = System.Text.Encoding.UTF8.GetString(e.Message);

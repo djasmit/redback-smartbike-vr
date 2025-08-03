@@ -15,7 +15,7 @@ public class Mqtt : MonoBehaviour
     public int MqttPort = 1883;
     public string MqttUsername = "";
     public string MqttPassword = "";
-    public bool AutoConnect = false;
+    public bool AutoConnect = true;
 
     // Device ID of the Bike being connected to
     public static string DeviceId = "000001";
@@ -57,7 +57,7 @@ public class Mqtt : MonoBehaviour
         }
 
         // create the mqtt client ready for communication
-        _client = new MqttClient(MqttHostname, MqttPort, true, null, null, MqttSslProtocols.TLSv1_2);
+        _client = new MqttClient(MqttHostname, MqttPort, false, null, null, MqttSslProtocols.TLSv1_2); //changed secure to false to remove TLS handshake for testing
         _connected = false;
 
         if (AutoConnect)
@@ -67,9 +67,11 @@ public class Mqtt : MonoBehaviour
     // connection system to connect to this instance
     public bool Connect()
     {
+        Debug.Log($"Trying to connect");
         try
         {
-            Debug.Log($"Trying to connect to {MqttHostname}:{MqttPort}");
+            Debug.Log($"Trying to connect to {MqttHostname}:{MqttPort}\nWith {MqttUsername}, {MqttPassword}");
+            Debug.Log($"Connection ID: {ConnectionID}");
             _client.Connect(ConnectionID, MqttUsername, MqttPassword);
             _connected = true;
 
